@@ -47,9 +47,6 @@ DigitalIn limit6(LIMIT_SW6);
 DigitalIn kouden1(KOUDEN1);
 DigitalIn kouden2(KOUDEN2);
 DigitalIn kouden3(KOUDEN3);
-DigitalIn kouden4(KOUDEN4);
-DigitalIn kouden5(KOUDEN5);
-DigitalIn kouden6(KOUDEN6);
 
 RoboClaw roboclaw_1(129, &roboclaw1, 115200);
 RoboClaw roboclaw_2(128, &roboclaw1, 115200);
@@ -143,6 +140,8 @@ static void daiza_up(int x){
       wait_us(x);
       den_ben_3 = 1;
       pc.printf("dai_up_fin\t");
+      wait_us(3000000);//1000000 = 1秒//現在3秒
+      flag_h_go = true;
       daiza_sw_1 = false; 
     }
 }
@@ -169,6 +168,8 @@ static void hina_up(int x,int y){
       den_ben_1 = 1;
       den_ben_2 = 1;
       pc.printf("hina_up_fin\t");
+      wait_us(3000000);//1000000 = 1秒//現在3秒
+      flag_d_go = true;
       hina_sw_1 = false; 
     }
 }
@@ -181,7 +182,7 @@ static void hina_open(int x){
       wait_us(x);
       led_1 = 1;
       pc.printf("bon_ok\t");
-      wait_us(7000000);
+      wait_us(3000000);
       hina_sw_2 = false;
     }
 }
@@ -313,8 +314,9 @@ int main() {
     // pc.printf("%d,%d,%d\t",(int)kouden4,(int)kouden5,(int)kouden6);
 
     // pc.printf("%d,%d,%d\t",(bool)kouden1,(bool)kouden2,(bool)kouden3);//kouden1 = 1, kouden2 = 0
+  //  pc.printf("%d\t",(bool)limit5);
     // pc.printf("%d,%d,%d,%d,%d\t",(bool)limit1,(bool)limit2,(bool)limit3,(bool)limit4,(bool)limit6); //ok
-     //１＝右リミット閉，２＝右リミット開，３＝左リミット閉，４＝左リミット開，６＝ひな上
+     //１＝左リミット開，２＝，３＝ひな下，４＝右リミット閉，５＝６＝ひな上
     // pc.printf("%d,%d,%d\t",(int)Controller.readButton_bin(MARU),(int)Controller.readButton_bin(BATU),(int)Controller.readButton_bin(SHIKAKU));
 
      //   pc.printf("%d\t",(int)but);
@@ -342,7 +344,7 @@ int main() {
          }
       }
 
-      if (Controller.readButton_bin(BATU) == 1) { //おろす
+      if (flag_h_go == true) { //おろす
         if(limit3 == 1){
          roboclaw_2.SpeedM1(100);
         }else if(limit3 == 0){
@@ -371,7 +373,7 @@ int main() {
          pc.printf("hina_111\t");
        }
      }
-     if(Controller.readButton_bin(SHIKAKU) == 1){//ひなアーム開く
+     if(flag_d_go == true){//ひなアーム開く
    //    pc.printf("hina_open_go\t");
        hina_open(2000000);
      }
