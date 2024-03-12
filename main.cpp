@@ -76,8 +76,6 @@ bool flag_S_go = false;
 bool flag_M_go = false;
 bool flag_10ms = false;
 
- bool readButton_bin(unsigned int ButtonNum);
-
 bool fall_button_maru = false;
 bool fall_button_batu = false;
 bool fall_button_shikaku = false;
@@ -133,61 +131,9 @@ void air_5(int x){
     wait_us(x);
     den_ben_5 = 0;
 }
-static void daiza_up(int x){
-    static bool daiza_sw_1 = true;
-    if(daiza_sw_1){
-      pc.printf("dai_up_ok\t");
-      wait_us(x);
-      den_ben_3 = 1;
-      pc.printf("dai_up_fin\t");
-      wait_us(3000000);//1000000 = 1秒//現在3秒
-      flag_h_go = true;
-      daiza_sw_1 = false; 
-    }
-}
-static void daiza_down(int x,int y){
-    static bool daiza_sw_2 = true;
-    if(daiza_sw_2){
-      pc.printf("dai_down_ok\t");
-      wait_us(x);
-      den_ben_4 = 1;
-      wait_us(y);
-      den_ben_4 = 0;
-      den_ben_5 = 1;
-      wait_us(y);
-      den_ben_5 = 0;
-      pc.printf("dai_down_fin\t");
-      daiza_sw_2 = false; 
-    }
-}
-static void hina_up(int x,int y){
-    static bool hina_sw_1 = true;
-    if(hina_sw_1){
-      pc.printf("hina_up_ok\t");
-      wait_us(x);
-      den_ben_1 = 1;
-      den_ben_2 = 1;
-      pc.printf("hina_up_fin\t");
-      wait_us(3000000);//1000000 = 1秒//現在3秒
-      flag_d_go = true;
-      hina_sw_1 = false; 
-    }
-}
-static void hina_open(int x){
-    static bool hina_sw_2 = true;
-    if(hina_sw_2){
-      pc.printf("hina_open_ok\t");
-      den_ben_1 = 0;
-      den_ben_2 = 0;
-      wait_us(x);
-      led_1 = 1;
-      pc.printf("bon_ok\t");
-      wait_us(3000000);
-      hina_sw_2 = false;
-    }
-}
+
 int main() {
-  fripper.attach(&warikomi, 0.01);
+  fripper.attach(&warikomi, 0.1);
   pc.printf("init\n");
   Controller.init(CONCOM_AVAILABLETIME, CONCOM_INTERVAL);
   pc.printf("con_ok\n");
@@ -304,112 +250,354 @@ int main() {
        */
      //   pc.printf("%d\t",(int)but);
 
-      /*  if(but == 0){
-            test_led(1000000);
-        } */
+      //  if(but == 0){
+       //     test_led(1000000);
+       // }
       // pc.printf("iii\t");
       
+      //   pc.printf("%d,%d\t",(int)kouden1,(int)kouden2);//kouden1 = 1, kouden2 = 0
      //  pc.printf("%d,%d\t",(int)den_ben_4,(int)den_ben_5);
 
-    // pc.printf("%d,%d,%d\t",(int)kouden4,(int)kouden5,(int)kouden6);
-
-    // pc.printf("%d,%d,%d\t",(bool)kouden1,(bool)kouden2,(bool)kouden3);//kouden1 = 1, kouden2 = 0
-  //  pc.printf("%d\t",(bool)limit5);
-    // pc.printf("%d,%d,%d,%d,%d\t",(bool)limit1,(bool)limit2,(bool)limit3,(bool)limit4,(bool)limit6); //ok
-     //１＝左リミット開，２＝，３＝ひな下，４＝右リミット閉，５＝６＝ひな上
-    // pc.printf("%d,%d,%d\t",(int)Controller.readButton_bin(MARU),(int)Controller.readButton_bin(BATU),(int)Controller.readButton_bin(SHIKAKU));
+    // pc.printf("%d,%d,%d,%d,%d,%d\n",(bool)limit1,(bool)limit2,(bool)limit3,(bool)limit4,(bool)limit5,(bool)limit6); //ok
+     //１＝左リミット開，２＝死，３＝ひな上(1→0になるが0に張り付く)，４＝右リミット閉，５＝右リミット開，６＝左リミット閉
 
      //   pc.printf("%d\t",(int)but);
     //  pc.printf("%d\t",(bool)limit5);
-     // pc.printf ("%d,%d,%d,%d\t",fall_button_sankaku,fall_button_shikaku,fall_button_maru,fall_button_batu);
+    //  pc.printf ("%d,%d,%d,%d\t",fall_button_sankaku,fall_button_shikaku,fall_button_maru,fall_button_batu);
     //  pc.printf ("%d,%d,%d,%d\t",(int)fall_button_up,(int)fall_button_down,(int)fall_button_left,(int)fall_button_right);
     //  pc.printf("%d\t",(int)fall_button_R1);
-    // pc.printf("%d\t",);
- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
-      /////////////////////////////台座////////////////////////////////////////
-      if (Controller.readButton_bin(MARU) == 1){//(kouden3 == 1) { //台座アーム昇降//速度は100で向きが逆
-         if(limit4 == 1){
-          roboclaw_2.SpeedM1(-100);
-         }else if(limit4 == 0){
-          roboclaw_2.SpeedM1(0);
-         }
-         if(limit2 == 1){
-          roboclaw_2.SpeedM2(100);
-         }else if(limit2 == 0){
-          roboclaw_2.SpeedM2(0);
-         }
-         if(limit2 == 0 && limit4 == 0){
-        //  pc.printf("dai_up_go\t");
-          daiza_up(3000000);
-         }
-      }
-
-      if (flag_h_go == true) { //おろす
-        if(limit3 == 1){
-         roboclaw_2.SpeedM1(100);
-        }else if(limit3 == 0){
-         roboclaw_2.SpeedM1(0);
-        }
-        if(limit1 == 1){
-            roboclaw_2.SpeedM2(-100);
-        }else if(limit1 == 0){
-        roboclaw_2.SpeedM2(0);
-        }
-        if(limit1 == 0 && limit3 == 0){
-     //    pc.printf("dai_down_go\t");
-         daiza_down(1000000,1000000);
-        }
-      }
       
-  //////////////////////////////////////ひなアーム////////////////////////////////////////////////////
-     if(Controller.readButton_bin(SANKAKU) == 1){//(kouden1 == 0 && kouden2 == 1){ //ひなアーム上昇
-       if(limit6 == 1){
-         pc.printf("hina_up\t");
-         roboclaw_1.SpeedM1(2500);
-       }else if(limit6 == 0){
-         roboclaw_1.SpeedM1(0);
-    //     pc.printf("hina_up_go\t");
-         hina_up(1000000,1000000);
-         pc.printf("hina_111\t");
-       }
-     }
-     if(flag_d_go == true){//ひなアーム開く
-   //    pc.printf("hina_open_go\t");
-       hina_open(2000000);
+      
+      if ((int)fall_button_maru == 1) { //台座アーム昇降//速度は100で向きが逆
+        flag_d_go = true;
+        pc.printf("Daiza.UP\n");
+        speed1 = -100;
+      }else if ((int)fall_button_batu == 1) {
+        flag_d_go = true;
+        pc.printf("Daiza.DOWN\n");
+        speed1 = 100;
+      }else if ((int)limit2 == 0) {
+        flag_d_go = false;
+      }else if ((int)limit3 == 0) { 
+        flag_d_go = false;
+
+      if ((int)fall_button_maru == 1) { //台座アーム昇降//速度は100で向きが逆
+        flag_d_go = true;
+        pc.printf("Daiza.UP\n");
+        speed2 = 100;
+      }else if ((int)fall_button_batu == 1) {
+        flag_d_go = true;
+        pc.printf("Daiza.DOWN\n");
+        speed2 = -100;
+      }else if ((int)limit1 == 0) { 
+        flag_d_go = false;
+      }else if ((int)limit4 == 0) {
+        flag_d_go = false;
+      }
+     if (flag_d_go == false) {
+        roboclaw_2.SpeedM1(0);
+        roboclaw_2.SpeedM2(0);
+      }
+     if (flag_d_go == true) {
+        roboclaw_2.SpeedM1(speed1);
+        roboclaw_2.SpeedM2(speed2);
+      }
+
+     if((int)fall_button_sankaku == 1){ //ひな人形アーム昇降//速度は2500で振動あり
+        flag_h_go = true;//ひな人形
+        pc.printf("Hina.UP\n");
+        speed3 = 2500;
+     }else if ((int)fall_button_shikaku == 1) {
+        flag_h_go = true;//
+        pc.printf("Hina.DOWN\n");
+        speed3 = -2500;
+      }else if ((int)limit6 == 0) { 
+        flag_h_go = false;
+      }else if ((int)limit5 == 0) {
+        flag_h_go = false;
+      }
+     if (flag_h_go == false) {
+        roboclaw_1.SpeedM1(0);
+      }
+     if (flag_h_go == true) {
+        roboclaw_1.SpeedM1(speed3);
+      }
+     
+     if((int)fall_button_right == 1){ //ひな人形アーム　開 //電圧不足
+        den_ben_1 = 0;//右
+        den_ben_2 = 0;//左
+        pc.printf("nairihina.OPEN\n");
+     }else if((int)fall_button_left == 1){ //ひな人形アーム　閉　//電圧不足
+        den_ben_1 = 1;//右
+        den_ben_2 = 1;//左
+        pc.printf("nairihina.CLOSE\n");//
      }
 
-     flag_10ms = false;
-    
-     ///////////////////////////////////受け取るデータ//////////////////////////////////////////////////
-   /*  asi = (int)underCarriageSerial.getc();
-     if(asi == 97){
-      souko = 1;
-     }else if(asi == 98){
-      tenzi_1 = 1;
-     }else if(asi == 99){
-      tansu = 1;
-     }else if(asi ==100){
-      tenzi_2 = 1; 
-     }*/
-     /////////////////////////////////////送るデータ///////////////////////////////
- /*   receive = underCarriageSerial.getc();
+     if(kouden1 == 0){
+        den_ben_1 = 1;
+     }else{
+         den_ben_1 = 0;
+     }
+     if(kouden2 == 1){
+         den_ben_2 = 1;
+     }else{
+         den_ben_2 = 0;
+     }
+
+  //   if((int)fall_button_left == 1){ //ひな人形三人官女側アーム開閉
+   //     den_ben_2 = 0;
+    //    pc.printf("sannninnkanjyo.OPEN\n");
+    // }else{
+     //   den_ben_2 = 1;
+   //  }
+   
+     if((int)fall_button_up == 1) { //倒すエアシリ　
+        pc.printf("knock down.OPEN\n");
+        air_3(3000000);//右上
+     }else{
+       den_ben_3 = 0;
+     }
+     if ((int)fall_button_down == 1) { //整えるエアシリ　
+       pc.printf("make up.OPEN\n");
+       air_4(3000000);//右下
+     }else{
+        den_ben_4 = 0;
+     }
+     if((int)fall_button_R1 == 1){ //ひきづるエアシリ　
+        den_ben_3 = 1;//左
+     }else{
+      //   den_ben_3 = 1;
+     }
+     
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+      if((int)fall_button_maru == 1){//右開く
+        den_ben_1 = 0;
+      }
+      if((int)fall_button_batu == 1){//右閉じる
+        den_ben_1 = 1;
+      }
+      if((int)fall_button_sankaku == 1){//左開く
+        den_ben_2 = 0;
+      }
+      if((int)fall_button_shikaku == 1){//左閉じる
+        den_ben_2 = 1;
+      }
+
+       if ((int)fall_button_up == 1) { //ひな人形　上昇
+        flag_S_go = true;
+        pc.printf("S.UP\n");
+        speed1 = -1000;
+      } 
+      
+      // else if ((int)fall_button_down == 1) { //ひな人形　下降
+       // flag_S_go = true;
+       // pc.printf("S.DOWN\n");
+       // speed1 = 1000;
+        
+      } else if ((int)limit6 == 0) { //リミットストップ
+        flag_S_go = false;
+      }
+
+      if (flag_S_go == false) { //STOP
+        roboclaw1.SpeedM1(0);
+        // pc.printf("S.STOP\n");
+        p_led_user = 0;
+      }
+      if (flag_S_go == true) {//GO
+        roboclaw1.SpeedM1(speed1);
+       // pc.printf("go");
+        p_led_user = 1;
+      }
+     */
+       /*
+      if(limit1 == 1){//送信テスト
+      
+      pc.printf("send_ok");
+      p_led_user = 1;
+       int data;
+       char send;
+       data = 97;
+       send = (char)data;
+       upCarriageSerial.putc(send);
+       
+      bool sendData({1,2,3,4,5},5);
+      } 
+       */
+       /*
+      if(limit2 == 0){//受信テスト
+      
+      p_led_user = 1;
+      pc.printf("recive_ok");
+      
+       char receive;
+       int data = 0;
+       receive = underCarriageSerial.getc();
+       data = (int)receive;
+       pc.printf("%d", data);
+      if(data == 97){  
+        pc.printf("check_ok");
+       }else if(data > 0){
+         pc.printf("%d", data);
+       }else{
+           pc.printf("bad");
+       }
+       
+       pc.printf("%d",data);
+     }
+     */
+    // pc.printf ("%d,%d,%d,%d\t",fall_button_right,fall_button_down,fall_button_maru,fall_button_batu);
+
+     /*
+
+      if ((int)fall_button_maru == 1) { //サブ昇降
+        flag_S_go = true;
+        pc.printf("S.UP\n");
+        speed1 = -1000;
+      } else if ((int)fall_button_batu == 1) {
+        flag_S_go = true;
+        pc.printf("S.DOWN\n");
+        speed1 = 1000;
+      } else if ((int)limit1 == 0) { 
+        flag_S_go = false;
+      }
+      else if ((int)limit2 == 0) {
+        flag_S_go = false;
+      }
+
+      if (flag_S_go == false) {
+        roboclaw1.SpeedM2(0);
+        // pc.printf("S.STOP\n");
+        p_led_user = 0;
+      }
+      if (flag_S_go == true) {
+        roboclaw1.SpeedM2(speed1);
+        pc.printf("go");
+        p_led_user = 1;
+      }
+
+      if ((int)fall_button_shikaku == 1) { //サブ開閉
+        den_ben_1 = 0;
+        p_led_red = 1;
+        pc.printf("S_1.OPEN\n");
+      }
+      if ((int)fall_button_sankaku == 1) {
+        den_ben_1 = 1;
+        p_led_red = 0;
+        pc.printf("S_1.CLOSE\n");
+      }
+      if ((int)fall_button_up == 1) { //サブ開閉
+        den_ben_2 = 0;
+        p_led_green = 1;
+        pc.printf("S_2.OPEN\n");
+      }
+      if ((int)fall_button_left == 1) {
+        den_ben_2 = 1;
+        p_led_green = 0;
+        pc.printf("S_2.CLOSE\n");
+      } */
+     /*  if ((int)limit3 == 0) { //メイン昇降
+            flag_M_go = false;
+          }
+       if ((int)limit4 == 0) {
+            flag_M_go = false;
+          } 
+       if ((int)fall_button_right == 1) {
+        flag_M_go = true;
+        pc.printf("M.UP\n");
+        posi = 500;
+      } else if ((int)fall_button_down == 1) {
+        flag_M_go = true;
+        pc.printf("M.DOWN\n");
+        posi = 0;
+      } 
+      
+       if (flag_M_go == false) {
+            roboclaw1.SpeedAccelDeccelPositionM1(0,100,0,0,true);
+            pc.printf("M.STOP\n");
+            p_led_green = 0;
+          }
+       if (flag_M_go == true) {
+        roboclaw1.SpeedAccelDeccelPositionM1(0, 500, 0, posi, false);
+        p_led_green = 1;
+        pc.printf("ok\n");
+      }
+
+      if ((int)fall_button_up == 1) { //メイン開閉
+        den_ben_3 = 1;
+       // p_led_brue = 1;
+       // pc.printf("M.OPEN\n");
+      }
+      if ((int)fall_button_left == 1) {
+        den_ben_3 = 0;
+        p_led_brue = 0;
+        pc.printf("M.CLOSE\n");
+      }
+     
+      // if (limit1 == 1) {
+      //   pc.printf("1");
+      // }
+
+      // if (limit2 == 1) {
+      // pc.printf("8");
+      //  led_3 = 0;
+      // led_2 = 0;
+      // led_1 = 0;
+
+      // else{
+      // pc.printf("4");
+      // led_3 = 1;
+      // led_2 = 1;
+      // led_1 = 1;
+
+      // if (limit3 == 1) {
+      //  pc.printf("3");
+      //}
+      // if (limit4 == 1) {
+      //  pc.printf("4");
+      // }
+
+       // pc.printf
+       // ("%d,%d,%d,%d\t",fall_button_right,fall_button_down,fall_button_maru,fall_button_batu);
+      pc.printf("%d,%d,%d,%d\t", (bool)limit1, (bool)limit2, (bool)limit3,
+                (bool)limit4);
+      //pc.printf("s_go:%d,m_go:%d,speed:%d,possi:%d\n", flag_S_go, flag_M_go,
+      //          speed1, posi);
+      
+      
+      flag_10ms = false;
+      */
+     /*
+     pc.printf("Daiza.UP\n");
+        wait_us(5000000); //1000000で1秒
+        pc.printf("knock down.OPEN\n");
+        wait_us(5000000);
+        pc.printf("make up.OPEN\n");
+        wait_us(3000000);
+     */
+     /*
+     receive = underCarriageSerial.getc();
      data = (int)receive;
 
      pc.printf("%d",data);
-     if(data == 97){
+     if(data == 1){
       souko = 1;
       pc.printf("souko");
-     }else if(data == 98){
+     }else if(data == 2){
       tenzi_1 = 1;
       pc.printf("tenzi_1");
-     }else if(data == 99){
+     }else if(data == 3){
       tansu = 1;
       pc.printf("tansu");
-     }else if(data == 100){
+     }else if(data ==4){
       tenzi_2 = 1; 
       pc.printf("tennzi_2");
      }
      */
+
+
+     flag_10ms = false;
+    }
     }
   }
-}
+} 
