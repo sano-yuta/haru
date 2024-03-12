@@ -332,7 +332,7 @@ int main() {
         den_ben_2 = 1;//左
         pc.printf("nairihina.CLOSE\n");//
      }
-
+/*
      if(kouden1 == 0){
         den_ben_1 = 1;
      }else{
@@ -343,7 +343,7 @@ int main() {
      }else{
          den_ben_2 = 0;
      }
-
+*/
   //   if((int)fall_button_left == 1){ //ひな人形三人官女側アーム開閉
    //     den_ben_2 = 0;
     //    pc.printf("sannninnkanjyo.OPEN\n");
