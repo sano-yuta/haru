@@ -168,38 +168,38 @@
 //#define UMS_RX ( P5_4 )//Serial4
 //#define COM_SERIALTX (  )//Serial5_P3
 //#define COM_SERIALRX (  )//Serial5_P3
-#define ROBOCLAW1_SERIALTX ( P2_5 )//Serial6
-#define ROBOCLAW1_SERIALRX ( P2_6 )//Serial6
+#define ROBOCLAW1_SERIALTX ( P5_4 )//Serial6
+#define ROBOCLAW1_SERIALRX ( P5_3 )//Serial6
 #define ROBOCLAW2_SERIALTX ( P8_13 )//Serial6
 #define ROBOCLAW2_SERIALRX ( P8_11 )
 
 //#define UMS_ID ( 25 )
 
-// 光電センサ
-#define KOUDEN1 ( P1_7 ) 
-#define KOUDEN2 ( P1_6 ) 
-#define KOUDEN3 ( P2_7 )
-#define KOUDEN4 ( P3_15 ) 
-#define KOUDEN5 ( P3_14 ) 
-#define KOUDEN6 ( P3_13 )
+// 光電センサe
+#define KOUDEN1 ( P1_10 ) 
+#define KOUDEN2 ( P1_11 ) 
+#define KOUDEN3 ( P1_13 )
+#define KOUDEN4 ( P1_15 ) 
+#define KOUDEN5 (  ) 
+#define KOUDEN6 (  )
 //#define KOUDEN4 ( P2_9 )
 //#define KOUDEN5 ( P2_10 )
 
 // リミットスイッチ
-#define LIMIT_SW1 ( P5_0 ) //台座右　手前
-#define LIMIT_SW2 ( P5_1 ) //台座右　奥
-#define LIMIT_SW3 ( P5_2 ) //台座左　奥
-#define LIMIT_SW4 ( P5_3 ) //台座左　手前
-#define LIMIT_SW5 ( P5_4 ) //ひな上
-#define LIMIT_SW6 ( P5_5 ) //ひな下
+#define LIMIT_SW1 ( P10_0 ) //台座右　手前//P10_0
+#define LIMIT_SW2 ( P1_0 ) //台座右　奥//P1_6
+#define LIMIT_SW3 ( P1_1 ) //台座左　奥//P1_7
+#define LIMIT_SW4 ( P1_12 ) //台座左　手前//P1_12
+#define LIMIT_SW5 ( P1_6 ) //ひな上
+#define LIMIT_SW6 ( P1_7 ) //ひな下
 
 //電磁弁
-#define DEN_BEN1 ( P7_15 ) //ひな 7_15
-#define DEN_BEN2 ( P8_1 ) //ひな 8_1
-#define DEN_BEN3 ( P10_15 ) //ひきづる 10_12 
-#define DEN_BEN4 ( P10_12 ) //たおす 1_2
-#define DEN_BEN5 ( P10_14 ) //ととのえる 8_1
-#define DEN_BEN6 ( P10_13 )
+#define DEN_BEN1 ( P4_0 ) //ひな 7_15
+#define DEN_BEN2 ( P2_13 ) //ひな 8_1
+#define DEN_BEN3 ( P10_13 ) //ひきづる 10_12 
+#define DEN_BEN4 ( P5_1 ) //たおす 1_2
+#define DEN_BEN5 ( P5_0 ) //ととのえる 8_1
+#define DEN_BEN6 ( P2_10 )
 
 // AMT10系
 #define ENC_A_1 (  ) 
